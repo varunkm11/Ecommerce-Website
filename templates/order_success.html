@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Order Confirmed — Roseew Shop</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          Roseew Shop
+        </a>
+        <div class="nav-links">
+          <a href="/" class="nav-link">Shop</a>
+          <a href="/wishlist" class="nav-link">
+            <i class="fas fa-heart"></i>
+            <span class="badge" id="wishlist-count">0</span>
+          </a>
+          <a href="/cart" class="nav-link">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge" id="cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="success-page">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <h1 class="success-title">Order Placed Successfully!</h1>
+        <p class="success-message">Thank you for your purchase. Your order has been confirmed and will be shipped soon.</p>
+
+        <div class="order-details">
+          <div class="order-detail-item">
+            <i class="fas fa-receipt"></i>
+            <div>
+              <span class="detail-label">Order Number</span>
+              <span class="detail-value">#{{ range(10000, 99999) | random }}</span>
+            </div>
+          </div>
+
+          <div class="order-detail-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <span class="detail-label">Confirmation Email</span>
+              <span class="detail-value">Sent to your email</span>
+            </div>
+          </div>
+
+          <div class="order-detail-item">
+            <i class="fas fa-truck"></i>
+            <div>
+              <span class="detail-label">Estimated Delivery</span>
+              <span class="detail-value">3-5 business days</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="success-actions">
+          <a href="/" class="btn btn-primary btn-large">
+            <i class="fas fa-shopping-bag"></i> Continue Shopping
+          </a>
+        </div>
+
+        <div class="success-note">
+          <i class="fas fa-info-circle"></i>
+          <p>You can track your order status via the confirmation email we sent you.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>Powered by intelligent dynamic pricing algorithms</p>
+      </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

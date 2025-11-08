@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ product.name }} — Roseew Shop</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          Roseew Shop
+        </a>
+        <div class="nav-links">
+          <a href="/" class="nav-link">Shop</a>
+          <a href="/wishlist" class="nav-link">
+            <i class="fas fa-heart"></i>
+            <span class="badge" id="wishlist-count">0</span>
+          </a>
+          <a href="/cart" class="nav-link">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge" id="cart-count">0</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Shop</a>
+
+      <div class="product-detail-grid">
+        <!-- Product Image -->
+        <div class="detail-image-section">
+          <img src="{{ product.image }}" alt="{{ product.name }}" class="detail-image">
+          <button class="wishlist-btn-large" onclick="toggleWishlist('{{ product.id }}', event)">
+            <i class="far fa-heart"></i> Add to Wishlist
+          </button>
+        </div>
+
+        <!-- Product Info -->
+        <div class="detail-info-section">
+          <span class="product-category">{{ product.category }}</span>
+          <h1 class="detail-title">{{ product.name }}</h1>
+          
+          <!-- Pricing Section -->
+          <div class="detail-pricing">
+            <div class="price-main">
+              <span class="current-price-large">₹{{ '%.0f'|format(product.recommended_price) }}</span>
+              <span class="price-badge">Best Price</span>
+            </div>
+          </div>
+
+          <!-- Stock & Expected Sales -->
+          <div class="stock-section">
+            <div class="stock-item">
+              <i class="fas fa-box"></i>
+              <span><strong>{{ product.inventory }}</strong> items in stock</span>
+            </div>
+            <div class="stock-item">
+              <i class="fas fa-chart-line"></i>
+              <span>Expected sales: <strong>{{ product.expected_sales|round(0)|int }}</strong> units</span>
+            </div>
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="quantity-section">
+            <label for="quantity">Quantity:</label>
+            <div class="quantity-selector">
+              <button onclick="changeQuantity(-1)" class="qty-btn">-</button>
+              <input type="number" id="quantity" value="1" min="1" max="{{ product.inventory }}" readonly>
+              <button onclick="changeQuantity(1)" class="qty-btn">+</button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="detail-actions">
+            <button class="btn btn-primary btn-large" onclick="addToCartWithQuantity('{{ product.id }}')">
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+            <button class="btn btn-secondary btn-large" onclick="buyNow('{{ product.id }}')">
+              <i class="fas fa-bolt"></i> Buy Now
+            </button>
+          </div>
+
+          <!-- Description -->
+          <div class="detail-description">
+            <h3>Description</h3>
+            <p>{{ product.description }}</p>
+          </div>
+
+          <!-- Features -->
+          <div class="detail-features">
+            <h3>Features</h3>
+            <ul>
+              {% for feature in product.features %}
+              <li><i class="fas fa-check"></i> {{ feature }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Sizes -->
+          {% if product.sizes %}
+          <div class="detail-sizes">
+            <h3>Available Sizes</h3>
+            <div class="size-options">
+              {% for size in product.sizes %}
+              <span class="size-badge">{{ size }}</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Dynamic Pricing Info -->
+          <div class="pricing-insights">
+            <h3><i class="fas fa-robot"></i> Dynamic Pricing Insights</h3>
+            <div class="insight-grid">
+              <div class="insight-item">
+                <span class="insight-label">Expected Profit</span>
+                <span class="insight-value">₹{{ '%.0f'|format(product.expected_profit) }}</span>
+              </div>
+              <div class="insight-item">
+                <span class="insight-label">Profit Margin</span>
+                <span class="insight-value">{{ (product.margin*100)|round(1) }}%</span>
+              </div>
+              <div class="insight-item">
+                <span class="insight-label">Expected Revenue</span>
+                <span class="insight-value">₹{{ '%.0f'|format(product.expected_revenue) }}</span>
+              </div>
+            </div>
+            <p class="insight-note">
+              <i class="fas fa-info-circle"></i>
+              Our AI-powered pricing engine optimizes this price based on current demand, competitor pricing, and inventory levels to give you the best value.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>Powered by intelligent dynamic pricing algorithms</p>
+      </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

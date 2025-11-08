@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Shopping Cart — Roseew Shop</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="logo">
+          <i class="fas fa-shopping-bag"></i>
+          Roseew Shop
+        </a>
+        <div class="nav-links">
+          <a href="/" class="nav-link">Shop</a>
+          <a href="/wishlist" class="nav-link">
+            <i class="fas fa-heart"></i>
+            <span class="badge" id="wishlist-count">0</span>
+          </a>
+          <a href="/cart" class="nav-link active">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="badge" id="cart-count">{{ items|length }}</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <h1 class="page-title"><i class="fas fa-shopping-cart"></i> Shopping Cart</h1>
+
+      {% if items %}
+      <div class="cart-layout">
+        <!-- Cart Items -->
+        <div class="cart-items-section">
+          {% for item in items %}
+          <div class="cart-item" data-product-id="{{ item.id }}">
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="cart-item-image">
+            
+            <div class="cart-item-details">
+              <h3 class="cart-item-name">{{ item.name }}</h3>
+              <p class="cart-item-category">{{ item.category }}</p>
+              <p class="cart-item-price">₹{{ '%.0f'|format(item.recommended_price) }} each</p>
+            </div>
+
+            <div class="cart-item-quantity">
+              <label>Quantity:</label>
+              <div class="quantity-selector">
+                <button onclick="updateCartQuantity('{{ item.id }}', {{ item.quantity - 1 }})" class="qty-btn">-</button>
+                <input type="number" value="{{ item.quantity }}" min="1" max="{{ item.inventory }}" readonly>
+                <button onclick="updateCartQuantity('{{ item.id }}', {{ item.quantity + 1 }})" class="qty-btn">+</button>
+              </div>
+            </div>
+
+            <div class="cart-item-subtotal">
+              <span class="subtotal-label">Subtotal:</span>
+              <span class="subtotal-value">₹{{ '%.0f'|format(item.subtotal) }}</span>
+            </div>
+
+            <button class="remove-btn" onclick="removeFromCart('{{ item.id }}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+          <h3>Order Summary</h3>
+          
+          <div class="summary-row">
+            <span>Subtotal ({{ items|length }} items)</span>
+            <span>₹{{ '%.0f'|format(total) }}</span>
+          </div>
+          
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span>{% if total < 3000 %}₹99{% else %}<span class="free">FREE</span>{% endif %}</span>
+          </div>
+          
+          <div class="summary-row">
+            <span>GST (18%)</span>
+            <span>₹{{ '%.0f'|format(total * 0.18) }}</span>
+          </div>
+          
+          <hr>
+          
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <span>₹{{ '%.0f'|format(total + (99 if total < 3000 else 0) + total * 0.18) }}</span>
+          </div>
+
+          <a href="/checkout" class="btn btn-primary btn-large btn-block">
+            <i class="fas fa-lock"></i> Proceed to Checkout
+          </a>
+
+          <a href="/" class="btn btn-secondary btn-block">
+            <i class="fas fa-arrow-left"></i> Continue Shopping
+          </a>
+
+          <div class="savings-notice">
+            <i class="fas fa-star"></i>
+            <span>You're saving an average of 12% vs. competitors!</span>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Your cart is empty</h2>
+        <p>Add some products to get started!</p>
+        <a href="/" class="btn btn-primary">
+          <i class="fas fa-shopping-bag"></i> Start Shopping
+        </a>
+      </div>
+      {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>Powered by intelligent dynamic pricing algorithms</p>
+      </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
